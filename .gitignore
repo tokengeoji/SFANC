@@ -11,14 +11,18 @@ __pycache__/
 
 # Regenerable datasets (keep existing upstream example WAVs)
 /noise_dataset/
+/SFANC_NoFeedback/noise_dataset/
 
 # Feedback-aware experiments are outside this upload scope.
 # Preserve all files locally.
 /SFANC_Feedback_Training/
+/SFANC_NoFeedback/SFANC_Feedback_Training/
 /train_sfanc_feedback_1dcnn.py
+/SFANC_NoFeedback/train_sfanc_feedback_1dcnn.py
 
 # Intermediate pretraining checkpoint
 /Trained models/*_partial.mat
+/SFANC_NoFeedback/Trained models/*_partial.mat
 
 # Editor and OS files
 .vscode/

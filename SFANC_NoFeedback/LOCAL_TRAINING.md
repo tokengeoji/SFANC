@@ -35,7 +35,7 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Run from the repository root, in this order:
+From the repository root, first run `cd SFANC_NoFeedback`. Run all environment setup, training and analysis commands from that folder. Training sequence:
 
 ```powershell
 python generate_my_dataset_16k.py
@@ -65,14 +65,14 @@ The modified primary/secondary MAT files and original backups are retained, alon
 - `.venv/`, Python caches and editor files.
 - `noise_dataset/`, including generated WAVs, labels and split CSVs.
 - Entire `SFANC_Feedback_Training/`, including feedback coefficients, trainers, models, metrics, UART code and runtime distributions.
-- Root `train_sfanc_feedback_1dcnn.py`.
+- `train_sfanc_feedback_1dcnn.py` at either repository or implementation-folder level.
 - Partial filter-pretraining checkpoint.
 
-No excluded files were deleted or moved. The IDE's UART script in Downloads was not changed. The environment snapshot may mention packages absent from the local environment; it records observations and does not add UART dependencies to this training scope.
+No datasets or checkpoints were deleted. Tracked implementation files were moved together, preserving their relative positions. The IDE's UART script in Downloads was not changed. The environment snapshot may mention packages absent from the local environment; it records observations and does not add UART dependencies to this training scope.
 
 ## Review and upload
 
-The current origin points to the original author's `Luo-Zhengding/SFANC-FxNLMS-ANC-Algorithm-based-on-Deep-Learning` repository. Configure your own repository before pushing. Staging, commit and push remain on hold for user review.
+This repository is `https://github.com/tokengeoji/SFANC`. Implementation files are grouped under `SFANC_NoFeedback/`; the repository root retains README.md and .gitignore. The original upstream source is credited in UPSTREAM_README.md. The initial training upload was merged into develop; this change only organizes files and documentation.
 
 ```powershell
 git status --short
