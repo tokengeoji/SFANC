@@ -1,0 +1,14 @@
+# Installed direct dependencies observed in local .venv (Python 3.12.10).
+# Reference snapshot, not a portable lockfile; CUDA wheels need a matching index.
+ipykernel==7.3.0
+jupyter==1.1.1
+matplotlib==3.11.2
+numba==0.67.0
+numpy==2.5.3
+pandas==3.0.6
+progressbar2==4.6.0
+scikit-learn==1.9.1
+scipy==1.18.1
+torch==2.11.0+cu130
+torchaudio==2.11.0+cu130
+# Not found in this environment: pyserial, sounddevice, tqdm

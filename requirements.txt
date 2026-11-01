@@ -1,0 +1,15 @@
+# Python 3.12; training and analysis dependencies.
+# Install torch/torchaudio matching your CUDA driver before this file.
+numpy
+scipy
+pandas
+torch
+torchaudio
+scikit-learn
+numba
+tqdm
+matplotlib
+progressbar2
+# Original notebook
+jupyter
+ipykernel
