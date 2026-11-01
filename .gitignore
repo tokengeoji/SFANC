@@ -1,0 +1,27 @@
+# Local Python environment and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+
+# Regenerable datasets (keep existing upstream example WAVs)
+/noise_dataset/
+
+# Feedback-aware experiments are outside this upload scope.
+# Preserve all files locally.
+/SFANC_Feedback_Training/
+/train_sfanc_feedback_1dcnn.py
+
+# Intermediate pretraining checkpoint
+/Trained models/*_partial.mat
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
