@@ -29,3 +29,18 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+
+# TI Code Composer Studio generated output and machine-local launch metadata
+/firmware/*/Debug/
+/firmware/*/Release/
+/firmware/*/.config/
+/firmware/*/.launches/
+/firmware/*/src/
+/firmware/*/*.bak
+
+# Runtime outputs
+/runtime/*.wav
+/runtime/*.csv
+
+# Preserved pre-reorganization local duplicates (never uploaded)
+/.local-backup/
