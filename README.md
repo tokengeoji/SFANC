@@ -19,6 +19,13 @@ Generated datasets, Python caches, and Code Composer Studio build output are
 excluded from Git. Each model and filter set has one canonical copy to avoid
 drift between the training, runtime, and firmware folders.
 
+## Hardware setup
+
+The reference setup uses an ECM8000 microphone, UMC404HD audio interface,
+OMAP-L138 DSP, TPA3116D2 amplifier, and a DIY 4-inch full-range speaker.
+See [`docs/HARDWARE_SETUP.md`](docs/HARDWARE_SETUP.md) for the complete device
+list, signal flow, and cable connection table.
+
 ## Real-time runtime
 
 Install the runtime dependencies and inspect the available audio/serial devices:
