@@ -1,8 +1,8 @@
-# SFANC
+# Hybrid_FxNLMS_SFANC
 
-Selective Fixed-filter Active Noise Control for an OMAP-L138/TMS320C6748 DSP.
-The repository contains the offline training workflow, PC-side real-time noise
-classifier/UART dispatcher, and Code Composer Studio firmware projects.
+OMAP-L138 기반의 Hybrid_FxNLMS_SFANC 프로젝트입니다.
+필터 학습, PC 실시간 소음 분류 및 UART 통신, Code Composer Studio 기반
+DSP ANC 실행 코드를 포함합니다.
 
 ## Repository layout
 
