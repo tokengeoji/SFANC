@@ -11,7 +11,7 @@ Hybrid_FxNLMS_SFANC/
 ├─ hardware_setup/                         Hardware, duct diagrams, and photos
 ├─ filter_training/                        SFANC filter-selection model training
 └─ execution/
-   ├─ anc_execution/
+   ├─ ccs_anc_execution/
    │  └─ ccs_projects/
    │     ├─ FxNLMS0/                       Baseline FxNLMS CCS project
    │     └─ FxNLMS0_16_sfanc/              SFANC-enabled CCS project
@@ -80,10 +80,10 @@ cd Hybrid_FxNLMS_SFANC/filter_training
 ## DSP ANC firmware
 
 Import either folder under
-`Hybrid_FxNLMS_SFANC/execution/anc_execution/ccs_projects/` as an existing
+`Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/` as an existing
 Code Composer Studio project. The projects target CCS 9.3, TI C6000 compiler
 8.3.5, SYS/BIOS 6.76, and the LCDK OMAP-L138. See the
-[DSP ANC execution guide](Hybrid_FxNLMS_SFANC/execution/anc_execution/README.md)
+[DSP ANC execution guide](Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/README.md)
 for the project roles and generated-file policy.
 
 ## 프로젝트 설명 (한글)
