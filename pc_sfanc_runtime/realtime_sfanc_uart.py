@@ -285,7 +285,7 @@ def main():
         return
 
     # 1. Load PyTorch model. Keep the trained model in its canonical
-    # SFANC_NoFeedback directory instead of duplicating it under runtime.
+    # sfanc_filter_training directory instead of duplicating it here.
     base_dir = Path(__file__).resolve().parent
     repo_root = base_dir.parent
     model_path = Path(args.model)
@@ -293,7 +293,7 @@ def main():
         candidates = [
             base_dir / model_path,
             base_dir / "models" / model_path,
-            repo_root / "SFANC_NoFeedback" / model_path,
+            repo_root / "sfanc_filter_training" / model_path,
         ]
         for c in candidates:
             if c.exists():
@@ -302,7 +302,8 @@ def main():
 
     if not model_path.exists():
         print(f"[ERROR] Model file not found: {args.model}")
-        print("  Searched runtime/, runtime/models/, and SFANC_NoFeedback/.")
+        print("  Searched pc_sfanc_runtime/, pc_sfanc_runtime/models/, "
+              "and sfanc_filter_training/.")
         sys.exit(1)
 
     print(f"\n[INFO] Loading SFANC 1D CNN model from: {model_path}")

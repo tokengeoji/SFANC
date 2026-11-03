@@ -1,11 +1,11 @@
-# DSP firmware
+# DSP ANC firmware
 
 Both folders are importable TI Code Composer Studio projects for the
 LCDK OMAP-L138/TMS320C6748 target.
 
 - `FxNLMS0`: baseline filtered-x normalized LMS controller.
 - `FxNLMS0_16_sfanc`: 16 kHz SFANC controller with six pre-trained filters and
-  UART-driven filter selection from the Python runtime.
+  UART-driven filter selection from the PC SFANC runtime.
 
 The shared-looking `lib/` folders remain inside each project intentionally:
 Code Composer Studio owns their source discovery and include paths independently.

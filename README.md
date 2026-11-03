@@ -7,17 +7,21 @@ classifier/UART dispatcher, and Code Composer Studio firmware projects.
 ## Repository layout
 
 ```text
-SFANC_NoFeedback/             Training, analysis, measured paths, and base model
-runtime/                      Real-time microphone/WAV inference and UART control
+sfanc_filter_training/        Filter-selection model training and analysis
+pc_sfanc_runtime/             PC microphone/WAV inference and UART control
   models/                     Runtime-only model variants
-firmware/
+dsp_anc_firmware/
   FxNLMS0/                    Baseline FxNLMS Code Composer Studio project
   FxNLMS0_16_sfanc/           SFANC firmware with UART filter switching
+docs/                         Hardware documentation, diagrams, and photos
 ```
 
 Generated datasets, Python caches, and Code Composer Studio build output are
 excluded from Git. Each model and filter set has one canonical copy to avoid
-drift between the training, runtime, and firmware folders.
+drift between the training, PC runtime, and DSP firmware folders.
+
+The root `README.md` is the repository's main guide. `.gitignore` tells Git
+which generated, temporary, or machine-specific files must not be uploaded.
 
 ## Hardware setup
 
@@ -26,50 +30,52 @@ OMAP-L138 DSP, TPA3116D2 amplifier, and a DIY 4-inch full-range speaker.
 See [`docs/HARDWARE_SETUP.md`](docs/HARDWARE_SETUP.md) for the complete device
 list, signal flow, and cable connection table.
 
-## Real-time runtime
+## PC real-time SFANC runtime
 
 Install the runtime dependencies and inspect the available audio/serial devices:
 
 ```powershell
-python -m pip install -r runtime/requirements.txt
-python runtime/realtime_sfanc_uart.py --mode scan
+python -m pip install -r pc_sfanc_runtime/requirements.txt
+python pc_sfanc_runtime/realtime_sfanc_uart.py --mode scan
 ```
 
-Run the no-feedback model (loaded from `SFANC_NoFeedback/sfanc_cnn_best.pth`):
+Run the no-feedback model (loaded from
+`sfanc_filter_training/sfanc_cnn_best.pth`):
 
 ```powershell
-python runtime/realtime_sfanc_uart.py --mode mic --channel 1
+python pc_sfanc_runtime/realtime_sfanc_uart.py --mode mic --channel 1
 ```
 
-Run the feedback-aware model stored in `runtime/models/`:
+Run the feedback-aware model stored in `pc_sfanc_runtime/models/`:
 
 ```powershell
-python runtime/realtime_sfanc_uart_feedback.py --mode mic --channel 1
+python pc_sfanc_runtime/realtime_sfanc_uart_feedback.py --mode mic --channel 1
 ```
 
-See [`runtime/README.md`](runtime/README.md) for operating modes and hardware
-arguments.
+See [`pc_sfanc_runtime/README.md`](pc_sfanc_runtime/README.md) for operating
+modes and hardware arguments.
 
-## Training without acoustic feedback-path modeling
+## SFANC filter training (without acoustic feedback-path modeling)
 
 The implementation, measured-path data, models, and upstream examples are in
-[`SFANC_NoFeedback/`](SFANC_NoFeedback/).
+[`sfanc_filter_training/`](sfanc_filter_training/).
 
-- [Training workflow and environment](SFANC_NoFeedback/LOCAL_TRAINING.md)
-- [Six-class CNN trainer](SFANC_NoFeedback/train_sfanc_1dcnn.py)
-- [Pretrained six-class model](SFANC_NoFeedback/sfanc_cnn_best.pth)
-- [Original paper and upstream attribution](SFANC_NoFeedback/UPSTREAM_README.md)
+- [Training workflow and environment](sfanc_filter_training/LOCAL_TRAINING.md)
+- [Six-class CNN trainer](sfanc_filter_training/train_sfanc_1dcnn.py)
+- [Pretrained six-class model](sfanc_filter_training/sfanc_cnn_best.pth)
+- [Original paper and upstream attribution](sfanc_filter_training/UPSTREAM_README.md)
 
 Run training scripts from the implementation folder so their relative paths
 resolve correctly:
 
 ```powershell
-cd SFANC_NoFeedback
+cd sfanc_filter_training
 ```
 
-## DSP firmware
+## DSP ANC firmware
 
-Import either folder under `firmware/` as an existing Code Composer Studio
-project. The projects target CCS 9.3, TI C6000 compiler 8.3.5, SYS/BIOS 6.76,
-and the LCDK OMAP-L138. See [`firmware/README.md`](firmware/README.md) for the
-project roles and generated-file policy.
+Import either folder under `dsp_anc_firmware/` as an existing Code Composer
+Studio project. The projects target CCS 9.3, TI C6000 compiler 8.3.5,
+SYS/BIOS 6.76, and the LCDK OMAP-L138. See
+[`dsp_anc_firmware/README.md`](dsp_anc_firmware/README.md) for the project
+roles and generated-file policy.

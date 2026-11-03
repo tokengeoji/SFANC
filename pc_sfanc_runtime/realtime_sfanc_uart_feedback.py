@@ -281,7 +281,7 @@ def main():
         check_mic_channels(device_id=dev_id)
         return
 
-    # 1. Load PyTorch model from runtime/models by default.
+    # 1. Load PyTorch model from pc_sfanc_runtime/models by default.
     base_dir = Path(__file__).resolve().parent
     model_path = Path(args.model)
     if not model_path.is_absolute():
@@ -296,7 +296,7 @@ def main():
 
     if not model_path.exists():
         print(f"[ERROR] Model file not found: {args.model}")
-        print("  Searched runtime/ and runtime/models/.")
+        print("  Searched pc_sfanc_runtime/ and pc_sfanc_runtime/models/.")
         sys.exit(1)
 
     print(f"\n[INFO] Loading SFANC 1D CNN model from: {model_path.name}")
