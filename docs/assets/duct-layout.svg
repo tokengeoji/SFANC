@@ -64,11 +64,11 @@
   <text x="1015" y="232" class="small">x = 99~111 · 차지 길이 = 12</text>
 
   <line x1="1418.67" y1="270" x2="1418.67" y2="470" class="guide"/>
-  <circle cx="1418.67" cy="350.33" r="8" class="mic"/>
-  <circle cx="1418.67" cy="350.33" r="14" class="mic-ring"/>
+  <circle cx="1418.67" cy="341.67" r="8" class="mic"/>
+  <circle cx="1418.67" cy="341.67" r="14" class="mic-ring"/>
   <path d="M 1410 364 C 1380 400, 1340 430, 1290 446" class="leader"/>
   <text x="1045" y="467" class="label">에러 마이크</text>
-  <text x="1045" y="494" class="small">x ≈ 118 · 높이 = 7</text>
+  <text x="1045" y="494" class="small">x ≈ 118 · 높이 = 6.25 (덕트 중앙)</text>
   <text x="1045" y="519" class="small">구멍: ECM8000이 딱 들어가는 크기</text>
 
   <line x1="125" y1="275" x2="125" y2="408.33" class="dimension"/>
@@ -128,8 +128,8 @@
   <circle cx="1039" cy="865" r="58" class="speaker"/>
   <circle cx="1039" cy="865" r="43" class="speaker-inner"/>
   <text x="1003" y="872" class="label">Ø9</text>
-  <circle cx="1374" cy="874" r="8" class="mic"/>
-  <circle cx="1374" cy="874" r="14" class="mic-ring"/>
+  <circle cx="1374" cy="865" r="8" class="mic"/>
+  <circle cx="1374" cy="865" r="14" class="mic-ring"/>
   <line x1="885" y1="970" x2="1193.57" y2="970" class="dimension"/>
   <line x1="1193.57" y1="950" x2="1193.57" y2="980" class="extension"/>
   <text x="1018" y="962" class="dim-text">스피커 구간 12</text>
@@ -137,7 +137,7 @@
   <text x="1270" y="962" class="dim-text">끝 여유 9</text>
   <path d="M 1380 860 C 1400 820, 1390 785, 1350 760" class="leader"/>
   <text x="1175" y="750" class="label">에러 마이크: 스피커 끝 + 약 7</text>
-  <text x="1175" y="775" class="small">높이 7 · 덕트 끝까지 약 2</text>
+  <text x="1175" y="775" class="small">높이 6.25(덕트 중앙) · 덕트 끝까지 약 2</text>
   <path d="M 1475 820 C 1510 800, 1520 785, 1520 765" class="leader"/>
   <text x="1430" y="735" class="small">끝판: 빈 아크릴</text>
 
