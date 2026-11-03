@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050">
+  <defs>
+    <style>
+      .title { font: 700 34px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #12233f; }
+      .subtitle { font: 400 19px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #52627a; }
+      .panel-title { font: 700 23px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #17345f; }
+      .label { font: 600 18px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #172438; }
+      .small { font: 400 16px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #41506a; }
+      .dim-text { font: 700 16px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #155c92; }
+      .note { font: 500 17px "Malgun Gothic", "Noto Sans KR", sans-serif; fill: #6f4512; }
+      .panel { fill: #f8fbff; stroke: #ced9e8; stroke-width: 2; }
+      .duct { fill: #ffffff; stroke: #172438; stroke-width: 3; }
+      .centerline { stroke: #9babc0; stroke-width: 1.5; stroke-dasharray: 9 7; }
+      .guide { stroke: #8fa2ba; stroke-width: 1.5; stroke-dasharray: 5 5; }
+      .dimension { stroke: #1971aa; stroke-width: 2; fill: none; marker-start: url(#arrow); marker-end: url(#arrow); }
+      .extension { stroke: #6e829d; stroke-width: 1.4; }
+      .leader { stroke: #334760; stroke-width: 1.8; fill: none; marker-end: url(#arrowDark); }
+      .speaker { fill: #dbeeff; stroke: #11669e; stroke-width: 3; }
+      .speaker-inner { fill: none; stroke: #7bb5dc; stroke-width: 2; }
+      .mic { fill: #f29132; stroke: #7d3e00; stroke-width: 2; }
+      .mic-ring { fill: none; stroke: #f29132; stroke-width: 2; stroke-dasharray: 4 3; }
+      .blank-end { fill: #bfe4ff; stroke: #11669e; stroke-width: 2.5; }
+      .tag { fill: #fff4de; stroke: #e3b55f; stroke-width: 1.5; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1971aa"/>
+    </marker>
+    <marker id="arrowDark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334760"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="1050" fill="#eef3f8"/>
+  <text x="60" y="55" class="title">아크릴 덕트 장치 배치도</text>
+  <text x="60" y="88" class="subtitle">모든 치수 단위: cm · 제공 규격 120 × 12.5 × 12.5 · 아크릴 판 두께: 미확인</text>
+
+  <rect x="45" y="115" width="1510" height="535" rx="18" class="panel"/>
+  <text x="75" y="155" class="panel-title">A. 전체 측면 배치 — 레퍼런스 스피커 쪽 끝을 x = 0으로 정의</text>
+
+  <line x1="160" y1="215" x2="1440" y2="215" class="dimension"/>
+  <line x1="160" y1="225" x2="160" y2="260" class="extension"/>
+  <line x1="1440" y1="225" x2="1440" y2="260" class="extension"/>
+  <text x="760" y="203" class="dim-text">전체 길이 120</text>
+
+  <rect x="160" y="275" width="1280" height="133.33" class="duct"/>
+  <line x1="160" y1="341.67" x2="1440" y2="341.67" class="centerline"/>
+  <rect x="160" y="275" width="16" height="133.33" fill="#dbeeff" stroke="#172438" stroke-width="2"/>
+  <rect x="1424" y="275" width="16" height="133.33" class="blank-end"/>
+
+  <line x1="266.67" y1="270" x2="266.67" y2="470" class="guide"/>
+  <circle cx="266.67" cy="341.67" r="8" class="mic"/>
+  <circle cx="266.67" cy="341.67" r="14" class="mic-ring"/>
+  <path d="M 273 329 C 300 300, 342 285, 382 283" class="leader"/>
+  <text x="390" y="280" class="label">레퍼런스 마이크</text>
+  <text x="390" y="307" class="small">x = 10 · 높이 = 6.25</text>
+  <text x="390" y="332" class="small">구멍: ECM8000이 딱 들어가는 크기</text>
+
+  <rect x="1216" y="275" width="128" height="133.33" fill="#edf7ff" stroke="#58a5d5" stroke-width="2" stroke-dasharray="7 5"/>
+  <circle cx="1280" cy="341.67" r="48" class="speaker"/>
+  <circle cx="1280" cy="341.67" r="35" class="speaker-inner"/>
+  <text x="1243" y="347" class="label">Ø9</text>
+  <path d="M 1270 289 C 1260 250, 1240 230, 1210 220" class="leader"/>
+  <text x="1015" y="205" class="label">컨트롤 스피커</text>
+  <text x="1015" y="232" class="small">x = 99~111 · 차지 길이 = 12</text>
+
+  <line x1="1418.67" y1="270" x2="1418.67" y2="470" class="guide"/>
+  <circle cx="1418.67" cy="350.33" r="8" class="mic"/>
+  <circle cx="1418.67" cy="350.33" r="14" class="mic-ring"/>
+  <path d="M 1410 364 C 1380 400, 1340 430, 1290 446" class="leader"/>
+  <text x="1045" y="467" class="label">에러 마이크</text>
+  <text x="1045" y="494" class="small">x ≈ 118 · 높이 = 7</text>
+  <text x="1045" y="519" class="small">구멍: ECM8000이 딱 들어가는 크기</text>
+
+  <line x1="125" y1="275" x2="125" y2="408.33" class="dimension"/>
+  <line x1="135" y1="275" x2="155" y2="275" class="extension"/>
+  <line x1="135" y1="408.33" x2="155" y2="408.33" class="extension"/>
+  <text x="64" y="336" class="dim-text">12.5</text>
+  <text x="65" y="359" class="small">높이</text>
+
+  <path d="M 168 300 C 130 250, 105 240, 80 238" class="leader"/>
+  <text x="75" y="195" class="label">레퍼런스 스피커</text>
+  <text x="75" y="220" class="small">x = 0 끝판 · 구멍 Ø9</text>
+
+  <line x1="160" y1="490" x2="266.67" y2="490" class="dimension"/>
+  <line x1="160" y1="420" x2="160" y2="498" class="extension"/>
+  <line x1="266.67" y1="420" x2="266.67" y2="498" class="extension"/>
+  <text x="188" y="482" class="dim-text">10</text>
+
+  <line x1="160" y1="555" x2="1216" y2="555" class="dimension"/>
+  <line x1="1216" y1="420" x2="1216" y2="563" class="extension"/>
+  <text x="660" y="545" class="dim-text">99</text>
+
+  <line x1="1216" y1="590" x2="1344" y2="590" class="dimension"/>
+  <line x1="1344" y1="420" x2="1344" y2="598" class="extension"/>
+  <text x="1269" y="582" class="dim-text">12</text>
+
+  <line x1="1344" y1="555" x2="1440" y2="555" class="dimension"/>
+  <line x1="1440" y1="420" x2="1440" y2="563" class="extension"/>
+  <text x="1383" y="545" class="dim-text">9</text>
+
+  <line x1="1344" y1="520" x2="1418.67" y2="520" class="dimension"/>
+  <text x="1375" y="512" class="dim-text">약 7</text>
+  <text x="1160" y="625" class="small">에러 마이크에서 덕트 끝까지 약 2</text>
+
+  <rect x="45" y="675" width="715" height="335" rx="18" class="panel"/>
+  <text x="75" y="715" class="panel-title">B. 레퍼런스 스피커 측 끝판 (x = 0)</text>
+  <rect x="120" y="770" width="190" height="190" class="duct"/>
+  <circle cx="215" cy="865" r="68.4" class="speaker"/>
+  <circle cx="215" cy="865" r="50" class="speaker-inner"/>
+  <line x1="120" y1="745" x2="310" y2="745" class="dimension"/>
+  <line x1="95" y1="770" x2="95" y2="960" class="dimension"/>
+  <text x="191" y="738" class="dim-text">12.5</text>
+  <text x="50" y="872" class="dim-text" transform="rotate(-90 50 872)">12.5</text>
+  <text x="180" y="872" class="label">Ø9</text>
+  <path d="M 285 825 C 350 780, 390 775, 430 790" class="leader"/>
+  <text x="438" y="790" class="label">스피커 구멍 Ø9</text>
+  <text x="438" y="820" class="small">12.5 × 12.5 끝판 중앙 설치</text>
+  <rect x="420" y="850" width="290" height="95" rx="10" class="tag"/>
+  <text x="438" y="880" class="note">마이크 구멍은 Ø2가 아님</text>
+  <text x="438" y="908" class="small">ECM8000 본체가 딱 들어가는 크기로</text>
+  <text x="438" y="933" class="small">현물 외경을 실측해 가공</text>
+
+  <rect x="785" y="675" width="770" height="335" rx="18" class="panel"/>
+  <text x="815" y="715" class="panel-title">C. 컨트롤 스피커 측 상세 (x = 99~120)</text>
+  <polygon points="885,790 1425,790 1490,750 950,750" fill="#ffffff" stroke="#172438" stroke-width="2.5"/>
+  <rect x="885" y="790" width="540" height="150" class="duct"/>
+  <polygon points="1425,790 1490,750 1490,900 1425,940" class="blank-end"/>
+  <circle cx="1039" cy="865" r="58" class="speaker"/>
+  <circle cx="1039" cy="865" r="43" class="speaker-inner"/>
+  <text x="1003" y="872" class="label">Ø9</text>
+  <circle cx="1374" cy="874" r="8" class="mic"/>
+  <circle cx="1374" cy="874" r="14" class="mic-ring"/>
+  <line x1="885" y1="970" x2="1193.57" y2="970" class="dimension"/>
+  <line x1="1193.57" y1="950" x2="1193.57" y2="980" class="extension"/>
+  <text x="1018" y="962" class="dim-text">스피커 구간 12</text>
+  <line x1="1193.57" y1="970" x2="1425" y2="970" class="dimension"/>
+  <text x="1270" y="962" class="dim-text">끝 여유 9</text>
+  <path d="M 1380 860 C 1400 820, 1390 785, 1350 760" class="leader"/>
+  <text x="1175" y="750" class="label">에러 마이크: 스피커 끝 + 약 7</text>
+  <text x="1175" y="775" class="small">높이 7 · 덕트 끝까지 약 2</text>
+  <path d="M 1475 820 C 1510 800, 1520 785, 1520 765" class="leader"/>
+  <text x="1430" y="735" class="small">끝판: 빈 아크릴</text>
+
+  <text x="60" y="1035" class="small">※ 아크릴 판 두께가 확인되지 않아 내부 유효 단면 및 내부 체적은 계산하지 않음. x 위치는 레퍼런스 스피커 측 외측 끝판 기준.</text>
+</svg>
