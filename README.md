@@ -85,3 +85,16 @@ Code Composer Studio project. The projects target CCS 9.3, TI C6000 compiler
 8.3.5, SYS/BIOS 6.76, and the LCDK OMAP-L138. See the
 [DSP ANC execution guide](Hybrid_FxNLMS_SFANC/execution/anc_execution/README.md)
 for the project roles and generated-file policy.
+
+## 프로젝트 설명 (한글)
+
+이 프로젝트는 OMAP-L138 DSP를 기반으로 구현한 Hybrid FxNLMS-SFANC
+능동소음제어 시스템입니다.
+
+OMAP-L138 DSP에서 16 kHz 샘플링 주파수로 FxNLMS 알고리즘을 구현하는
+과정에서 컨트롤 스피커의 출력이 레퍼런스 마이크로 다시 유입되는 음향
+피드백 현상이 발생했습니다. 이를 보완하기 위해 컨트롤 스피커에서
+레퍼런스 마이크로 전달되는 피드백 경로를 고려했습니다. 또한 1D CNN이
+레퍼런스 마이크의 소음을 실시간으로 분류하고, 현재 소음에 적합한 사전
+학습 필터를 선택합니다. PC는 선택한 필터 번호를 UART로 OMAP-L138에
+전송하며, DSP는 해당 필터를 적용해 ANC를 수행합니다.
