@@ -35,7 +35,7 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-From the repository root, first run `cd sfanc_filter_training`. Run all environment setup, training and analysis commands from that folder. Training sequence:
+From the repository root, first run `cd Hybrid_FxNLMS_SFANC/filter_training`. Run all environment setup, training and analysis commands from that folder. Training sequence:
 
 ```powershell
 python generate_my_dataset_16k.py
@@ -72,7 +72,7 @@ No datasets or checkpoints were deleted. Tracked implementation files were moved
 
 ## Review and upload
 
-This repository is `https://github.com/tokengeoji/SFANC`. Training implementation files are grouped under `sfanc_filter_training/`; the repository root retains README.md and .gitignore. The original upstream source is credited in UPSTREAM_README.md. The initial training upload was merged into develop; this change only organizes files and documentation.
+This repository is `https://github.com/tokengeoji/SFANC`. Training implementation files are grouped under `Hybrid_FxNLMS_SFANC/filter_training/`; the repository root retains README.md and .gitignore. The original upstream source is credited in UPSTREAM_README.md. The initial training upload was merged into develop; this change only organizes files and documentation.
 
 ```powershell
 git status --short

@@ -5,10 +5,11 @@ Target: TMS320C6748 / OMAP-L138 (Project: FxNLMS0_16_sfanc)
 Sampling Rate: 16,000 Hz (16 kHz mono)
 
 Features:
-- Loads feedback-aware trained 6-class 1D CNN (sfanc_cnn_feedback_best.pth)
+- Loads trained 6-class 1D CNN (sfanc_cnn_best.pth)
 - Real-time audio stream from microphone (e.g., Behringer UMC404HD) or WAV simulation
 - Multi-channel support: Select Left (Ch0) or Right (Ch1) for Reference Microphone
 - Automatic COM10 detection & 115200 baud serial transmission
+- [NEW] Debounce & Hysteresis Stabilization: Prevents boundary chattering (e.g. 300~500Hz ping-pong)
 - Preprocesses audio (DC offset removal, RMS normalization) matching training
 - Runs CNN inference every 1 second (16,000 samples)
 - Transmits 1-byte pre-trained filter index (1 ~ 6) over UART to DSP
@@ -19,6 +20,11 @@ import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # 1D CNN runs in <1ms on CPU cleanly
 
 import builtins
+_orig_print = builtins.print
+def print(*args, **kwargs):
+    kwargs.setdefault('flush', True)
+    _orig_print(*args, **kwargs)
+
 import sys
 import time
 import argparse
@@ -29,13 +35,6 @@ import numpy as np
 import scipy.signal
 import torch
 import torch.nn as nn
-
-_orig_print = builtins.print
-
-
-def print(*args, **kwargs):
-    kwargs.setdefault('flush', True)
-    _orig_print(*args, **kwargs)
 
 try:
     import serial
@@ -235,13 +234,17 @@ def check_mic_channels(device_id=None, duration=3.0):
 # =========================================================================
 def main():
     parser = argparse.ArgumentParser(description="SFANC Real-Time Noise Classifier & DSP UART Dispatcher")
-    parser.add_argument("--model", type=str, default="sfanc_cnn_feedback_best.pth", help="Path to feedback-aware trained .pth model")
+    parser.add_argument("--model", type=str, default="sfanc_cnn_best.pth", help="Path to trained .pth model")
     parser.add_argument("--port", type=str, default=None, help="Serial port (default: auto-detects COM10)")
     parser.add_argument("--baud", type=int, default=115200, help="UART baud rate (default: 115200)")
     parser.add_argument("--mode", type=str, choices=["mic", "wav", "test", "scan", "check"], default="mic",
                         help="Operating mode: mic (live stream), wav (file play), test (synthetic sweep), scan (ports), check (test mic L/R)")
-    parser.add_argument("--channel", type=int, default=0, choices=[0, 1, 2, 3],
-                        help="Audio input channel to classify (0=Left/Input 1, 1=Right/Input 2). Default: 0")
+    parser.add_argument("--channel", type=int, default=1, choices=[0, 1, 2, 3],
+                        help="Audio input channel to classify (0=Left/Input 1, 1=Right/Input 2). Default: 1")
+    parser.add_argument("--debounce", type=int, default=2,
+                        help="Number of consecutive frames required to confirm filter swap (default: 2, 1=instant)")
+    parser.add_argument("--cooldown", type=int, default=2,
+                        help="Minimum seconds/frames to hold active filter before next swap (default: 2)")
     parser.add_argument("--wav", type=str, default=None, help="WAV file path for --mode wav")
     parser.add_argument("--device", type=int, default=None, help="Audio input device ID (optional)")
     parser.add_argument("--gate", type=float, default=0.002, help="Silence RMS threshold gate (default: 0.002)")
@@ -281,26 +284,30 @@ def main():
         check_mic_channels(device_id=dev_id)
         return
 
-    # 1. Load PyTorch model from pc_sfanc_runtime/models by default.
+    # 1. Load PyTorch model. Keep the trained model in its canonical
+    # filter_training directory instead of duplicating it here.
     base_dir = Path(__file__).resolve().parent
+    project_root = base_dir.parent.parent
     model_path = Path(args.model)
     if not model_path.is_absolute():
         candidates = [
             base_dir / model_path,
             base_dir / "models" / model_path,
+            project_root / "filter_training" / model_path,
         ]
-        for candidate in candidates:
-            if candidate.exists():
-                model_path = candidate
+        for c in candidates:
+            if c.exists():
+                model_path = c
                 break
 
     if not model_path.exists():
         print(f"[ERROR] Model file not found: {args.model}")
-        print("  Searched pc_sfanc_runtime/ and pc_sfanc_runtime/models/.")
+        print("  Searched sfanc_filter_selection/, "
+              "sfanc_filter_selection/models/, and filter_training/.")
         sys.exit(1)
 
-    print(f"\n[INFO] Loading SFANC 1D CNN model from: {model_path.name}")
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"\n[INFO] Loading SFANC 1D CNN model from: {model_path}")
+    device = torch.device("cpu")
     ckpt = torch.load(model_path, map_location=device)
 
     model = SFANC1DCNN(num_classes=6).to(device)
@@ -322,8 +329,9 @@ def main():
         print("[INFO] No serial port specified or found. Running in DRY-RUN mode.")
 
     ch_name = "Channel 0 (Left / Input 1)" if args.channel == 0 else f"Channel {args.channel} (Right / Input {args.channel + 1})"
-    print(f"[INFO] Reference Mic Source : {ch_name}")
-    print(f"[INFO] Tip: If your Reference Mic is on the other jack, use '--channel {1 if args.channel == 0 else 0}'")
+    print(f"[INFO] Reference Mic Source  : {ch_name}")
+    print(f"[INFO] Filter Stabilization  : Confirmed after {args.debounce} consecutive frames | Min Hold: {args.cooldown}s")
+    print(f"[INFO] Tip: If chattering occurs, adjust with '--debounce {args.debounce + 1}'")
 
     # 3. Execution based on mode
     print("\n" + "=" * 80)
@@ -332,13 +340,18 @@ def main():
     print(f"{'Frame':>5} | {'Time (s)':>8} | {'Pred':>4} | {'Frequency Band':^15} | {'Conf (%)':>8} | {'RMS':>7} | {'UART Tx':^9} | Status")
     print("-" * 80)
 
-    last_class_id = None
-    last_class_name = "None"
+    # Stabilization / Debounce State Tracking
+    active_class_id = None
+    active_class_name = "None"
+    pending_class_id = None
+    pending_count = 0
+    last_swap_frame = 0
+
     frame_idx = 0
     t0 = time.time()
 
     def process_frame(audio_chunk):
-        nonlocal last_class_id, last_class_name, frame_idx
+        nonlocal active_class_id, active_class_name, pending_class_id, pending_count, last_swap_frame, frame_idx
         frame_idx += 1
         elapsed = time.time() - t0
 
@@ -355,39 +368,94 @@ def main():
         class_id = class_meta["id"]
         is_silence = (raw_rms < args.gate)
 
-        # Hot-swap logic: Send byte (1..6) to DSP
         tx_str = "--"
         status_str = ""
 
         if is_silence:
             status_str = "[SILENCE / GATE]"
-        elif class_id != last_class_id or args.always_send:
+            pending_class_id = None
+            pending_count = 0
+
+        elif active_class_id is None:
+            # First sound detected: Initialize immediately
+            active_class_id = class_id
+            active_class_name = class_meta["name"]
+            last_swap_frame = frame_idx
+
             if ser and ser.is_open:
                 try:
                     ser.write(bytes([class_id]))
                     ser.flush()
                     tx_str = f"0x{class_id:02X} ({class_id})"
-                except Exception as e:
+                except Exception:
                     tx_str = "ERR"
             else:
                 tx_str = f"0x{class_id:02X} (DRY)"
 
-            if class_id != last_class_id:
-                # Prominent Hot-Swap Notification Banner!
+            print("\n" + "#" * 80)
+            print(f"  [INITIAL FILTER SET] Starting on {class_meta['name']} ({class_meta['band']})")
+            print(f"  Target Noise : {class_meta['desc']}")
+            print(f"  Confidence   : {conf:.1f}%  |  Audio RMS: {raw_rms:.5f}")
+            print(f"  UART Command : Sent byte 0x{class_id:02X} (Index {class_id}) -> DSP Initial W(z)")
+            print("#" * 80 + "\n")
+            status_str = f"*** INITIALIZED TO {class_meta['name']} ***"
+
+        elif class_id == active_class_id:
+            # Prediction matches currently active filter: Stable!
+            pending_class_id = None
+            pending_count = 0
+            if args.always_send and ser and ser.is_open:
+                try:
+                    ser.write(bytes([class_id]))
+                    ser.flush()
+                    tx_str = f"0x{class_id:02X} ({class_id})"
+                except Exception:
+                    pass
+                status_str = "[HEARTBEAT]"
+            else:
+                status_str = f"[MAINTAIN: {active_class_name}]"
+
+        else:
+            # Prediction differs from currently active filter: Apply Debounce Confirmation!
+            if class_id == pending_class_id:
+                pending_count += 1
+            else:
+                pending_class_id = class_id
+                pending_count = 1
+
+            time_since_last_swap = frame_idx - last_swap_frame
+
+            if pending_count >= args.debounce and time_since_last_swap >= args.cooldown:
+                # CONFIRMED: Swap authorized!
+                old_name = active_class_name
+                active_class_id = class_id
+                active_class_name = class_meta["name"]
+                last_swap_frame = frame_idx
+                pending_class_id = None
+                pending_count = 0
+
+                if ser and ser.is_open:
+                    try:
+                        ser.write(bytes([class_id]))
+                        ser.flush()
+                        tx_str = f"0x{class_id:02X} ({class_id})"
+                    except Exception:
+                        tx_str = "ERR"
+                else:
+                    tx_str = f"0x{class_id:02X} (DRY)"
+
                 print("\n" + "#" * 80)
-                print(f"  [FILTER SWAP] {last_class_name}  ===>  {class_meta['name']} ({class_meta['band']})")
+                print(f"  [FILTER SWAP CONFIRMED] {old_name}  ===>  {class_meta['name']} ({class_meta['band']})")
+                print(f"  Stabilization: Confirmed over {args.debounce} consecutive frames (No chattering)")
                 print(f"  Target Noise : {class_meta['desc']}")
                 print(f"  Confidence   : {conf:.1f}%  |  Audio RMS: {raw_rms:.5f}")
                 print(f"  UART Command : Sent byte 0x{class_id:02X} (Index {class_id}) -> DSP Hot-Swapping W(z)")
                 print("#" * 80 + "\n")
-
                 status_str = f"*** SWAPPED TO {class_meta['name']} ***"
-                last_class_id = class_id
-                last_class_name = class_meta["name"]
             else:
-                status_str = "[HEARTBEAT]"
-        else:
-            status_str = "[MAINTAIN]"
+                # UNCONFIRMED: Hold active filter on DSP to protect FxNLMS adaptation
+                cand_meta = CLASS_INFO[pending_class_id - 1]
+                status_str = f"[HOLD: {active_class_name} | Candid: {cand_meta['name']} ({pending_count}/{args.debounce})]"
 
         print(f"{frame_idx:5d} | {elapsed:8.1f} | {class_meta['name']:>4} | {class_meta['band']:^15} | {conf:7.1f}% | {raw_rms:7.4f} | {tx_str:^9} | {status_str}")
 
@@ -399,7 +467,7 @@ def main():
                 for c in range(6):
                     target_meta = CLASS_INFO[c]
                     print(f"\n>> Feeding synthetic noise: {target_meta['name']} ({target_meta['band']})...")
-                    for sub in range(2):
+                    for sub in range(args.debounce + 1):
                         noise = generate_synthetic_noise(c, duration=1.0, fs=FS)
                         process_frame(noise)
                         time.sleep(1.0)
