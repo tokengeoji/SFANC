@@ -1,6 +1,6 @@
 # DSP ANC firmware
 
-Both folders under `ccs_projects/` are importable TI Code Composer Studio projects for the
+Both project folders in this directory are importable TI Code Composer Studio projects for the
 LCDK OMAP-L138/TMS320C6748 target.
 
 - `FxNLMS0`: baseline filtered-x normalized LMS controller.

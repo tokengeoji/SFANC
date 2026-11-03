@@ -31,12 +31,12 @@ __pycache__/
 Thumbs.db
 
 # TI Code Composer Studio generated output and machine-local launch metadata
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/Debug/
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/Release/
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/.config/
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/.launches/
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/src/
-/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/ccs_projects/*/*.bak
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/Debug/
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/Release/
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/.config/
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/.launches/
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/src/
+/Hybrid_FxNLMS_SFANC/execution/ccs_anc_execution/*/*.bak
 
 # Runtime outputs
 /Hybrid_FxNLMS_SFANC/execution/sfanc_filter_selection/*.wav
