@@ -1,8 +1,8 @@
 # Hybrid_FxNLMS_SFANC
 
-OMAP-L138 기반의 Hybrid_FxNLMS_SFANC 프로젝트입니다.
-필터 학습, PC 실시간 소음 분류 및 UART 통신, Code Composer Studio 기반
-DSP ANC 실행 코드를 포함합니다.
+An OMAP-L138-based Hybrid_FxNLMS_SFANC project. It includes filter training,
+PC-side real-time noise classification and UART communication, and DSP ANC
+execution code for Code Composer Studio.
 
 ## Repository layout
 
